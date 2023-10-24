@@ -51,7 +51,7 @@ function ForgetPassword() {
       <Button variant="contained" className='mt-3' onClick={handlesubmit}>Sumbit</Button>
       {error ? <p className='text-danger mt-2'>{error}❗️</p> : ""}
       {message ? <p className='text-success text-center'>{message}✅</p> : ""}
-      {message ? <Link style={{ color: "black" }} className='fw-bold text-primary text-center' aria-current="page" to={`/reset-password/${resetToken}`}>Reset Password Link</Link> : ""}
+      {message ? <Link className='fw-bold text-primary text-center' aria-current="page" to={`/reset-password/${resetToken}`}>Reset Password Link</Link> : ""}
       </div>
     </div>
   )

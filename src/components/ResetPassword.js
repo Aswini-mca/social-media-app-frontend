@@ -62,7 +62,7 @@ function ResetPassword() {
            
             {error ? <p className='text-danger mt-2'>{error}❗️</p> : ""}
             </div>
-            {message ? <p className='text-success text-center'>{message}✅ please click <Link style={{ color: "black" }} aria-current="page" to="/" className='text-primary fw-bold'>Login</Link></p> : ""}
+            {message ? <p className='text-success text-center'>{message}✅ please click <Link aria-current="page" to="/" className='text-primary fw-bold'>Login</Link></p> : ""}
 
         </div>
     )

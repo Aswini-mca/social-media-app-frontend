@@ -9,3 +9,16 @@
   margin-left: 15px;
   margin-top: 20px;
 }
+
+.post{
+  display: flex;
+  flex-direction:column;
+  justify-content: space-between;
+  border: 1px solid;
+  margin: 1em;
+  padding: 1em;
+  text-align: left;
+}
+.post-icons{
+  
+}
