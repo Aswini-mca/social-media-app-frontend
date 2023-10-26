@@ -1,1 +1,1 @@
-export const API = 'https://social-media-app-backend-sdx2.onrender.com/'
+export const API = 'https://social-media-app-backend-sdx2.onrender.com'
