@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import TextField from '@mui/material/TextField';
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
@@ -12,30 +12,37 @@ import { API } from '../global';
 
 //UserProfile component
 function UserProfile() {
-  const [newpost, setNewPost] = useState("")
-  const [error, setError] = useState("")
-  const [userPost, setUserPost] = useState([])
+  const [newpost, setNewPost] = useState("");
+  const [error, setError] = useState("");
+  const [userPost, setUserPost] = useState([]);
+  const [comment, setComment] = useState("");
+  const [viewComments, setViewComments] = useState([]);
+  const [postId, setPostId] = useState("");
+  const [show, setShow] = useState(false);
+  const navigate = useNavigate();
   let token = localStorage.getItem("token");
 
   useEffect(() => {
-
-    const fetchData = async () => {
-      const res = await fetch(`${API}/post/user/all`, {
-        method: "GET",
-        headers: {
-          "content-type": "application/json",
-          "x-auth-token": token
-        },
-      })
-      const data = await res.json();
-      if (!data.data) {
-        setError(data.error)
-      } else {
-        setUserPost(data.data)
-      }
-    }
-    fetchData();
+    fetchPost();
   }, [])
+
+  //fetchpost function
+  const fetchPost = async () => {
+    const res = await fetch(`${API}/post/user/all`, {
+      method: "GET",
+      headers: {
+        "content-type": "application/json",
+        "x-auth-token": token
+      },
+    })
+    const data = await res.json();
+    if (!data.data) {
+      setError(data.error)
+    } else {
+      setUserPost(data.data)
+    }
+  }
+
   //handlepost coding
   const handlepost = async () => {
     const payload = {
@@ -55,60 +62,102 @@ function UserProfile() {
       setError(data.error);
     }
     if (data.message) {
-      alert("Posted Successfully")
+      fetchPost();
     }
+  }
+
+  const logout = () => {
+    localStorage.removeItem("token")
   }
   return (
     <div>
       <h4>My Profile</h4>
-      <Link className='fw-bold text-primary' aria-current="page" to='/home'>Home</Link><br />
+      <div className='d-flex justify-content-around mb-3'>
+        <Link className='fw-bold text-primary' aria-current="page" to='/home'>Home</Link>
+        <Link className='fw-bold text-primary' aria-current="page" to='#'>Static Page</Link>
+        <Link className='fw-bold text-primary' aria-current="page" to='/' onClick={logout}>Logout</Link>
+      </div>
+
       <TextField
-        id="username"
+        id="post"
         label="Share your Thoughts"
         type="text"
         className='mt-3'
         value={newpost}
         onChange={(e) => setNewPost(e.target.value)}
       />
-      <Button variant="contained" className='m-4' onClick={handlepost}>Post</Button>
+      <Button variant="contained" className='m-4' onClick={() => handlepost()}>Post</Button>
       {error ? <p className='text-danger'>{error}❗️</p> : ""}
+      <h5 className='text-secondary'>My Post</h5>
       {userPost && (
         <div>
           {userPost?.map((post) => (
             <div className='post' key={post._id}>
-
               <div className='d-flex justify-content-end'>
-                <IconButton
-                  aria-label="edit"
-                  color="secondary"
-                >
+                <IconButton aria-label="edit" color="secondary" onClick={() => navigate(`/edit-post/${post._id}`)}>
                   <EditIcon />
                 </IconButton>
-                <IconButton
-                  aria-label="delete"
-                  color="error"
-                // onClick={() => {
-                //   fetch(`${API}/post/user/delete/${post.id}`, { method: "DELETE" }).then(
-                //     () => fetchData()
-                //   );
-                // }}
-                >
+                <IconButton aria-label="delete" color="error"
+                  onClick={async () => {
+                    await fetch(`${API}/post/user/delete/${post._id}`, {
+                      method: "DELETE",
+                      headers: {
+                        "x-auth-token": token
+                      },
+                    }).then(() => fetchPost());
+                  }}>
                   <DeleteIcon />
                 </IconButton>
               </div>
               <h5>{post.user.username}</h5>
               <p>{post.newpost}</p>
-              <div className='d-flex justify-content-around'>
-                <IconButton aria-label="like-btn" color="primary">
-                  <Badge badgeContent={0} color="primary">
-                    <ThumbUpIcon />{post.likecount}
+              <div>
+                <IconButton aria-label="like-btn" color="primary" onClick={async () => {
+                  await fetch(`${API}/post/user/like/${post._id}`, {
+                    method: "PUT",
+                    headers: {
+                      "x-auth-token": token
+                    },
+                  }).then(() => fetchPost());
+                }}>
+                  <Badge badgeContent={post.likecount} color="primary">
+                    <ThumbUpIcon />
                   </Badge>
                 </IconButton>
-                <IconButton aria-label="like-btn" color="primary">
-                  <Badge badgeContent={0} color="primary">
-                    <CommentIcon />{post.commentCount}
+                {/* {show ? <span>dislike</span>:""} */}
+                <IconButton aria-label="like-btn" color="primary" onClick={() => setShow(!show)}>
+                  <Badge badgeContent={post.commentCount} color="primary">
+                    <CommentIcon />
                   </Badge>
                 </IconButton>
+                {show ?
+                  <div>
+                    <TextField
+                      id="comments"
+                      label="Enter Comments"
+                      type="text"
+                      className='mt-3'
+                      value={comment}
+                      onChange={(e) => setComment(e.target.value)}
+                    />
+                    <Button variant="contained" className='m-4' onClick={async () => {
+                      const payload = { comment, username: `${post.user.username}` }
+                      const res = await fetch(`${API}/post/user/comment/${post._id}`, {
+                        method: "POST",
+                        body: JSON.stringify(payload),
+                        headers: {
+                          "content-type": "application/json",
+                          "x-auth-token": token
+                        },
+                      })
+                      const data = await res.json();
+                      if (data.error) {
+                        setError(data.error)
+                      }
+                      fetchPost();
+                      setShow(false)
+                    }}>Enter</Button>
+                  </div> : ""}
               </div>
             </div>
           ))}

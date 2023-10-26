@@ -6,6 +6,7 @@ import ForgetPassword from './components/ForgetPassword';
 import Home from './components/Home';
 import ResetPassword from './components/ResetPassword';
 import UserProfile from './components/UserProfile';
+import EditPost from './components/EditPost';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path='/reset-password/:resetToken' element={<ResetPassword/>}/>
         <Route path='/home' element={<Home/>}/>
         <Route path='/user-profile' element={<UserProfile/>}/>
+        <Route path='/edit-post/:id' element={<EditPost/>}/>
      </Routes>
     </div>
   );
