@@ -71,7 +71,7 @@ function EditPostForm({ post }) {
                 value={editPost}
                 onChange={(e) => setEditPost(e.target.value)}
             />
-            <Button variant="contained" className='m-4' onClick={()=>{handlepost();navigate('/home')}}>Save</Button>
+            <Button variant="contained" className='m-4' onClick={()=>{handlepost();navigate('/user-profile')}}>Save</Button>
             {error ? <p className='text-danger'>{error}❗️</p> : ""}
         </div>
     )

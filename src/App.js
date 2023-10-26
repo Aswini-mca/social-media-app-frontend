@@ -7,6 +7,7 @@ import Home from './components/Home';
 import ResetPassword from './components/ResetPassword';
 import UserProfile from './components/UserProfile';
 import EditPost from './components/EditPost';
+import StatisticsPage from './components/StatisticsPage';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route path='/home' element={<Home/>}/>
         <Route path='/user-profile' element={<UserProfile/>}/>
         <Route path='/edit-post/:id' element={<EditPost/>}/>
+        <Route path='/statistics' element={<StatisticsPage/>}/>
      </Routes>
     </div>
   );
