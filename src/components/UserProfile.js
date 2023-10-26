@@ -162,7 +162,8 @@ function UserProfile() {
                         setError(data.error)
                       }
                       fetchPost();
-                      setShow(false)
+                      setShow(false);
+                      setComment('');
                     }}>Enter</Button>
                     <hr /><b>Comments</b>
                     <ul>
