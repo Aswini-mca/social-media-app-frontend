@@ -1,1 +1,1 @@
-export const API = 'http://localhost:9000'
+export const API = 'https://social-media-app-backend-sdx2.onrender.com/'
