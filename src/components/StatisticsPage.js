@@ -18,7 +18,7 @@ function StatisticsPage() {
         })
             .then((res) => res.json())
             .then((data) => setPost(data.data));
-    }, []);
+    }, [token]);
     
     // Format data for Chart.js
     const chartData = {
@@ -45,7 +45,8 @@ function StatisticsPage() {
 
     // Check if counts data is available before rendering the chart
     if (post.length === 0) {
-        return <div>Loading...</div>;
+        return <div class="spinner-border text-secondary m-5" role="status">
+        <span class="visually-hidden">Loading...</span> </div>;
     }
 
     const logout = () => {

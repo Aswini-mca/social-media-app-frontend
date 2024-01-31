@@ -6,15 +6,14 @@ import { API } from '../global';
 
 //edit post component
 function EditPost() {
+    
     const [post, setPost] = useState(null);
     const { id } = useParams();
     let token = localStorage.getItem("token");
 
     useEffect(() => {
-        fetchPost();
-    }, [])
 
-    //fetchpost function
+        //fetchpost function
     const fetchPost = async () => {
         const res = await fetch(`${API}/post/all/${id}`, {
             method: "GET",
@@ -28,8 +27,11 @@ function EditPost() {
             setPost(data.data)
         }
     }
+        fetchPost();
+    }, [id,token])
 
-    return post ? <EditPostForm post={post} /> : "Loading...";
+    return post ? <EditPostForm post={post} /> : <div class="spinner-border text-secondary m-5" role="status">
+    <span class="visually-hidden">Loading...</span> </div>;
 
 }
 
