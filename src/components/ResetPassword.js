@@ -46,6 +46,7 @@ function ResetPassword() {
                     type="password"
                     autoComplete="current-password"
                     value={newPassword}
+                    title='For strong Password min of 8 chars combo(A-Za-z0-9)1 special char'
                     onChange={(e) => setNewPassword(e.target.value)}
                 />
                 <br />
@@ -56,6 +57,7 @@ function ResetPassword() {
                     type="password"
                     autoComplete="current-password"
                     value={confirmPassword}
+                    title='For strong Password min of 8 chars combo(A-Za-z0-9)1 special char'
                     onChange={(e) => setConfirmPassword(e.target.value)}
                 />
                 <br />

@@ -96,6 +96,7 @@ function Signup() {
                 type="password"
                 autoComplete="current-password"
                 value={password}
+                title='For strong Password min of 8 chars combo(A-Za-z0-9)1 special char'
                 onChange={(e) => setPassword(e.target.value)}
             /><br />
             <FormControl>
