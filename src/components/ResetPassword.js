@@ -31,7 +31,8 @@ function ResetPassword() {
             setError(data.error)
         }
         if (data.message) {
-            setMessage(data.message)
+            setMessage(data.message);
+            setError('');
         }
     }
     return (

@@ -29,7 +29,8 @@ function ForgetPassword() {
       setError(data.error)
     }
     if (data.message) {
-      setMessage(data.message)
+      setMessage(data.message);
+      setError('');
     }
     if (data.resetToken) {
       setResetToken(data.resetToken)
